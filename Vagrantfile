@@ -14,6 +14,7 @@
 # BOX_PATH: map creatable boxes to base box paths
 BOX_PATH =
 {
+    "Windows-7" => "datadiode/w7sbash",
     "Windows-10" => "datadiode/w10sbash",
     "Windows-11" => "datadiode/w11sbash"
 }
@@ -33,7 +34,7 @@ VM_CPUS = "2"
 SHELL_ENV =
 {
     # Keyboard language
-    "KEYBOARD_LANGUAGE" => "de-DE"
+    "KEYBOARD_LANGUAGE" => "00000407"
 }
 
 ############################################################
