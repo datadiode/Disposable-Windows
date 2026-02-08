@@ -10,6 +10,7 @@ Section
 	${If} ${RunningX64}
 		File bin64\curl.exe
 		File /oname=tar.exe bin64\bsdtar.exe
+		File bin64\msys-*.dll
 	${Else}
 force3:
 		File bin32\curl.exe
