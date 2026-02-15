@@ -15,6 +15,7 @@
 BOX_PATH =
 {
     "Windows-7" => "datadiode/w7sbash",
+    "Windows-9" => "datadiode/w9sbash",
     "Windows-10" => "datadiode/w10sbash",
     "Windows-11" => "datadiode/w11sbash"
 }
