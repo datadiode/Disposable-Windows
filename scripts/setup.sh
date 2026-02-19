@@ -55,7 +55,7 @@ reg add "HKCU\\Control Panel\\Desktop" -v "FontSmoothing" -d 2 -f
 reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced" -v "ListviewShadow" -t REG_DWORD -d 0 -f
 
 # Extend the evaluation period if it did not yet happen
-if $WINDIR/System32/cscript $WINDIR/System32/slmgr.vbs -dlv | findstr -BEC:"Remaining Windows rearm count: 4"; then
+if $WINDIR/System32/cscript $WINDIR/System32/slmgr.vbs -dlv | findstr -BERC:"Remaining Windows rearm count: [24]"; then
   $WINDIR/System32/cscript $WINDIR/System32/slmgr.vbs -rearm
 fi
 
