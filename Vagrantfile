@@ -58,7 +58,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.define name, primary: true do |instance|
 
-    instance.vm.box = BOX_PATH[name.split(".")[0]]
+    name = name.dup
+    eval = name.slice!("~") ? "-eval" : ""
+
+    instance.vm.box = BOX_PATH[name.split(".")[0]] + eval
     instance.vm.box_check_update = BOX_UPDATE
     instance.vm.guest = :windows
     instance.vm.boot_timeout = 1800
