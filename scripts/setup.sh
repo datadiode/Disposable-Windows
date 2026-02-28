@@ -71,17 +71,16 @@ fi
 # Update certificates
 rootsupd.exe
 
-# Install Visual C++ runtimes (Win7 needs older ones)
-if [ ! -f vc_redist.*.exe ]; then
-  if reg query "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion" -v CurrentVersion | findstr -EC:" 6.1"; then
-    /usr/bin/curl -LO https://aka.ms/vs/16/release/VC_redist.x64.exe
-    /usr/bin/curl -LO https://aka.ms/vs/16/release/VC_redist.x86.exe
-  else
-    /usr/bin/curl -LO https://aka.ms/vc14/vc_redist.x64.exe
-    /usr/bin/curl -LO https://aka.ms/vc14/vc_redist.x86.exe
-  fi
-  ./vc_redist.x64.exe -passive
-  ./vc_redist.x86.exe -passive
+# Install Visual C++ runtimes
+if [ ! -f VisualCppRedist_AIO_x86_x64.exe ]; then
+  /usr/bin/curl -LO https://github.com/abbodi1406/vcredist/releases/download/v0.101.0/VisualCppRedist_AIO_x86_x64.exe
+  ./VisualCppRedist_AIO_x86_x64.exe -ai
+fi
+
+# Install .NET 4.8 if on Windows 7
+if [[ $(reg query "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion" -v CurrentVersion) =~ [^0-9]6\.1[^0-9] && ! -f NDP48-x86-x64-ENU.exe ]]; then
+  /usr/bin/curl -LO https://github.com/abbodi1406/dotNetFx4xW7/releases/download/24.10.08/NDP48-x86-x64-ENU.exe
+  ./NDP48-x86-x64-ENU.exe -ai
 fi
 
 # Install tuxliketimeout.exe
@@ -95,16 +94,30 @@ if [ ! -f $WINDIR/mkshortcut.exe ]; then
   /usr/bin/tar -xf mkshortcut.zip -C $WINDIR
 fi
 
-# Install iridium browser
-/usr/bin/curl -LO https://downloads.iridiumbrowser.de/windows/2022.04.100/iridiumbrowser-2022.04.100.0-x64.msi
-msiexec -i iridiumbrowser-2022.04.100.0-x64.msi -passive
-mkshortcut /o:"C:\\Users\\vagrant\\Desktop\\Iridium Browser.lnk" /t:"C:\\Program Files\\Iridium\\iridium.exe"
+# Install PnpUtilGui
+if [ ! -f PnpUtilGuiSetup.exe ]; then
+  /usr/bin/curl -LO https://github.com/datadiode/PnpUtilGui/releases/download/v0.3-alpha/PnpUtilGuiSetup.exe
+  ./PnpUtilGuiSetup.exe /S
+fi
 
-# Install fonts
-/usr/bin/curl -L https://github.com/ChiefMikeK/ttf-symbola/raw/refs/heads/master/Symbola-12.ttf -o $WINDIR/Fonts/Symbola.ttf
-reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts" -v "Symbola (TrueType)" -t REG_SZ -d Symbola.ttf -f
-/usr/bin/curl -L https://github.com/leanprover/presentations/raw/refs/heads/master/fonts/unifont.ttf -o $WINDIR/Fonts/unifont.ttf
-reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts" -v "Unifont (TrueType)" -t REG_SZ -d unifont.ttf -f
+# Install iridium browser
+if [ ! -f iridiumbrowser-2022.04.100.0-x64.msi ]; then
+  /usr/bin/curl -LO https://downloads.iridiumbrowser.de/windows/2022.04.100/iridiumbrowser-2022.04.100.0-x64.msi
+  msiexec -i iridiumbrowser-2022.04.100.0-x64.msi -passive
+  mkshortcut /o:"C:\\Users\\vagrant\\Desktop\\Iridium Browser.lnk" /t:"C:\\Program Files\\Iridium\\iridium.exe"
+fi
+
+# Install Symbola (TrueType) font
+if [ ! -f $WINDIR/Fonts/Symbola.ttf ]; then
+  /usr/bin/curl -L https://github.com/ChiefMikeK/ttf-symbola/raw/refs/heads/master/Symbola-12.ttf -o $WINDIR/Fonts/Symbola.ttf
+  reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts" -v "Symbola (TrueType)" -t REG_SZ -d Symbola.ttf -f
+fi
+
+# Install Unifont (TrueType) font
+if [ ! -f $WINDIR/Fonts/Fonts/unifont.ttf ]; then
+  /usr/bin/curl -L https://github.com/leanprover/presentations/raw/refs/heads/master/fonts/unifont.ttf -o $WINDIR/Fonts/unifont.ttf
+  reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts" -v "Unifont (TrueType)" -t REG_SZ -d unifont.ttf -f
+fi
 
 # Adjust font preferences
 /usr/bin/mkdir -p "C:/Users/vagrant/AppData/Local/Iridium/User Data/Default"
