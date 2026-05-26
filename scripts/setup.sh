@@ -96,7 +96,7 @@ fi
 
 # Install PnpUtilGui
 if [ ! -f PnpUtilGuiSetup.exe ]; then
-  /usr/bin/curl -LO https://github.com/datadiode/PnpUtilGui/releases/download/v0.3-alpha/PnpUtilGuiSetup.exe
+  /usr/bin/curl -LO https://github.com/datadiode/PnpUtilGui/releases/download/v0.8-alpha/PnpUtilGuiSetup.exe
   ./PnpUtilGuiSetup.exe /S
 fi
 
